@@ -1,5 +1,12 @@
 # DeepSelect
 
+import 
+```html
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+</head>
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.3.
 
 ## Development server
