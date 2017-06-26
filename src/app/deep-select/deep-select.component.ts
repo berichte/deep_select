@@ -19,24 +19,42 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   showingChildrenOf: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
 
   private ddList: Array<DeepSelectItem>;
+  private path = new Array<DeepSelectItem>();
 
   constructor() { }
 
   ngOnInit() {
+    this.initPath();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items']) {
       this.ddList = this.items;
+      this.initPath();
     }
   }
 
-  itemSelected = (item) => this.selected.emit(item);
+  initPath = () => {
+    this.path = new Array<DeepSelectItem>();
+    this.path.push({
+      text: 'home',
+      children: this.items,
+      value: 0
+    });
+  }
 
-  showItemChilds = (event, item) => {
-    console.log('show children', item);
+  itemSelected = (item: DeepSelectItem) => this.selected.emit(item);
+
+  showItemChilds = (event, item: DeepSelectItem) => {
     event.stopPropagation();
     this.ddList = item.children;
+    this.path.push(item);
     this.showingChildrenOf.emit(item);
+  }
+
+  crumbClicked = (event, crumb: DeepSelectItem) => {
+    const i = this.path.indexOf(crumb);
+    this.path = this.path.slice(0, i);
+    this.showItemChilds(event, crumb);
   }
 }
