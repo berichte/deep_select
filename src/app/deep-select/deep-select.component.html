@@ -5,6 +5,10 @@
     <ng-template #showSelected>{{selectedText}}</ng-template>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+    <div *ngIf="path.length > 1" class="dropdown-item row">
+      <span *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>
+    </div>
     <div class="dropdown-item row" *ngFor="let item of ddList" (click)="itemSelected(item)">
       <span>
         {{ item.text }}

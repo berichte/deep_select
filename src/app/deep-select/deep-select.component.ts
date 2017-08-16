@@ -28,16 +28,19 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   get selectedText() {
     return this.selected ? this.selected.text : '';
   }
+  private path = new Array<DeepSelectItem>();
 
   constructor() { }
 
   ngOnInit() {
     this.selectedChanged.subscribe(selected => this.selected = selected);
+    this.initPath();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items']) {
       this.ddList = this.items;
+      this.initPath();
     }
   }
 
@@ -48,5 +51,20 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     event.stopPropagation();
     this.ddList = item.children;
     this.showingChildrenOf.emit(item);
+  }
+
+  initPath = () => {
+    this.path = new Array<DeepSelectItem>();
+    this.path.push({
+      text: 'home',
+      children: this.items,
+      value: 0
+    });
+  }
+
+  crumbClicked = (event, crumb: DeepSelectItem) => {
+    const i = this.path.indexOf(crumb);
+    this.path = this.path.slice(0, i);
+    this.showItemChilds(event, crumb);
   }
 }
