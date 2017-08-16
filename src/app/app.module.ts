@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { DeepSelectComponent } from './deep-select/deep-select.component';
+import { DeepSelectModule } from 'app/deep-select/deep-select.module';
 
 
 @NgModule({
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    DeepSelectModule
   ],
   declarations: [
-    AppComponent,
-    DeepSelectComponent
+    AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
