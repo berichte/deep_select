@@ -4,7 +4,7 @@
     "url": "https://github.com/berichte/deep_select.git"
   },
   "name": "deep-select",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
