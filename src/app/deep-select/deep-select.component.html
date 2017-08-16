@@ -6,14 +6,14 @@
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-    <div *ngIf="path.length > 1" class="dropdown-item row">
+    <div *ngIf="path.length > 1" class="dropdown-item row crumb">
       <span *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>
     </div>
     <div class="dropdown-item row" *ngFor="let item of ddList" (click)="itemSelected(item)">
       <span>
         {{ item.text }}
       </span>
-      <div *ngIf="item.children && item.children.length > 0" (click)="showItemChilds($event, item)">
+      <div class="to-childs" *ngIf="item.children && item.children.length > 0" (click)="showItemChilds($event, item)">
         <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
           <path d="M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z" />
           <path d="M0-.25h24v24H0z" fill="none" />

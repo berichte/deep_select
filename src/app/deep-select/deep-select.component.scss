@@ -1,0 +1,22 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+    margin-right: 0;
+    margin-left: 0;
+    padding: 0; 
+}
+
+.crumb {
+    span {
+        font-size: small;
+        color: chocolate;
+    }
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+span, .to-childs {
+    cursor: pointer;
+}

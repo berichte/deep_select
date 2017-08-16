@@ -5,14 +5,17 @@ import { DeepSelectItem } from '../deep-select-item';
   // tslint:disable-next-line:component-selector
   selector: 'deep-select',
   templateUrl: './deep-select.component.html',
-  styleUrls: ['./deep-select.component.css']
+  styleUrls: ['./deep-select.component.scss']
 })
 export class DeepSelectComponent implements OnInit, OnChanges {
 
   @Input()
   items: Array<DeepSelectItem>;
   @Input()
-  placeholder: string = 'placeholder';
+  placeholder = '';
+
+  @Input()
+  pathRoot = '**';
 
   @Input()
   selected: DeepSelectItem;
@@ -56,7 +59,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   initPath = () => {
     this.path = new Array<DeepSelectItem>();
     this.path.push({
-      text: 'home',
+      text: this.pathRoot,
       children: this.items,
       value: 0
     });
