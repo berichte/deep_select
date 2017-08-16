@@ -11,18 +11,28 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   @Input()
   items: Array<DeepSelectItem>;
+  @Input()
+  placeholder: string = 'placeholder';
+
+  @Input()
+  selected: DeepSelectItem;
 
   @Output()
-  selected: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
+  selectedChanged: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
 
   @Output()
   showingChildrenOf: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
 
   private ddList: Array<DeepSelectItem>;
 
+  get selectedText() {
+    return this.selected ? this.selected.text : '';
+  }
+
   constructor() { }
 
   ngOnInit() {
+    this.selectedChanged.subscribe(selected => this.selected = selected);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -31,7 +41,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     }
   }
 
-  itemSelected = (item) => this.selected.emit(item);
+  itemSelected = (item) => this.selectedChanged.emit(item);
 
   showItemChilds = (event, item) => {
     console.log('show children', item);

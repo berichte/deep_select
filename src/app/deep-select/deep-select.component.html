@@ -1,7 +1,8 @@
 <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
     aria-expanded="false">
-    Dropdown button
+    <span *ngIf="selected === undefined; else showSelected">{{placeholder}}</span>
+    <ng-template #showSelected>{{selectedText}}</ng-template>
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <div class="dropdown-item row" *ngFor="let item of ddList" (click)="itemSelected(item)">
