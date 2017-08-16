@@ -1,6 +1,6 @@
 <md-select>
   <md-option *ngIf="path.length > 1">
-    <span *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>
+    <span class="crumb" *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>
   </md-option>
   <md-option *ngFor="let item of ddList" (click)="itemSelected(item)" [value]="item.value">
     <span>{{ item.text }}</span>
