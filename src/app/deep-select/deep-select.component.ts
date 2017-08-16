@@ -47,9 +47,9 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   itemSelected = (item) => this.selectedChanged.emit(item);
 
   showItemChilds = (event, item) => {
-    console.log('show children', item);
     event.stopPropagation();
     this.ddList = item.children;
+    this.path.push(item);
     this.showingChildrenOf.emit(item);
   }
 
