@@ -1,4 +1,8 @@
 {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berichte/deep_select.git"
+  },
   "name": "deep-select",
   "version": "0.1.0",
   "license": "MIT",
