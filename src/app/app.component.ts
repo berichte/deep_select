@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DeepSelectItem } from './deep-select-item';
+import { DeepSelectItem } from './deep-select/deep-select-item';
 import { exampleItems } from './expample.items';
 
 @Component({
