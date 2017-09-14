@@ -1,10 +1,10 @@
 <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+  <button class="btn btn-secondary dropdown-toggle" (click)="toggleDropdown()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
     aria-expanded="false">
     <span *ngIf="selected === undefined; else showSelected">{{placeholder}}</span>
     <ng-template #showSelected>{{selectedText}}</ng-template>
   </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+  <div *ngIf="isVisible" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
     <div *ngIf="path.length > 1" class="dropdown-item row crumb">
       <span *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>

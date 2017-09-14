@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 import { DeepSelectItem } from './deep-select-item';
 
 @Component({
@@ -25,15 +25,36 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   @Output()
   showingChildrenOf: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
+  
+  isVisible: boolean = false;
+  @Output() dropdownOpened = new EventEmitter();
+  @Output() dropdownClosed = new EventEmitter();
 
   private ddList: Array<DeepSelectItem>;
 
   get selectedText() {
     return this.selected ? this.selected.text : '';
   }
+
   private path = new Array<DeepSelectItem>();
 
-  constructor() { }
+  @HostListener('document: click', ['$event.target'])
+  onClick(target: HTMLElement | null) {
+    if (!this.isVisible) return;
+    let parentFound = false;
+    while (target != null && !parentFound) {
+      if (target === this.element.nativeElement) {
+        parentFound = true;
+      }
+      target = target.parentElement;
+    }
+    if (!parentFound) {
+      this.isVisible = false;
+      this.dropdownClosed.emit();
+    }
+  }
+
+  constructor(private element: ElementRef) { }
 
   ngOnInit() {
     this.selectedChanged.subscribe(selected => this.selected = selected);
@@ -69,5 +90,11 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     const i = this.path.indexOf(crumb);
     this.path = this.path.slice(0, i);
     this.showItemChilds(event, crumb);
+  }
+
+  
+  toggleDropdown() {
+    this.isVisible = !this.isVisible;
+    this.isVisible ? this.dropdownOpened.emit() : this.dropdownClosed.emit();
   }
 }
