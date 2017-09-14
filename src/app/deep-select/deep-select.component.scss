@@ -14,12 +14,19 @@
     }
 }
 
+.selected {
+    color: chocolate;
+    :hover {
+        color: rgba(210, 105, 30, 0.71);
+    }
+}
+
 .crumb {
     span {
         font-size: small;
         color: chocolate;
         :hover {
-            color: rgba(210, 105, 30, 0.71)
+            color: rgba(210, 105, 30, 0.71);
         }
     }
     display: flex;

@@ -22,6 +22,9 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   @Input()
   selected: DeepSelectItem;
 
+  @Input()
+  maxLevelSelectedPath = 2;
+
   @Output()
   selectedChanged: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
 
@@ -117,9 +120,21 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   buildSelectedPathString = (item: DeepSelectItem, path: Array<DeepSelectItem>): string => {
     let selectedPath = '';
-    path
+    const notRootPath = path
       .filter(i => i.text !== this.pathRoot)
-      .forEach(i => selectedPath += i.text + this.crumbSeperator);
+    if(this.maxLevelSelectedPath === 0)  {
+      notRootPath.forEach((item, index) => {
+        selectedPath += item.text + this.crumbSeperator;
+      });
+    } else {
+      for(let i = 0; i < notRootPath.length; i++) {
+        if (i + 1 < this.maxLevelSelectedPath) {
+          selectedPath += notRootPath[i].text + this.crumbSeperator;
+        } else if (i + 1 > this.maxLevelSelectedPath && i === notRootPath.length - 1) {
+          selectedPath += ' ... ' + this.crumbSeperator;
+        }
+      }
+    }
     selectedPath += item.text;
     return selectedPath;
   }
