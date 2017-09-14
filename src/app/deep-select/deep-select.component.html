@@ -2,14 +2,18 @@
   <button class="btn btn-secondary dropdown-toggle" (click)="toggleDropdown()" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
     aria-expanded="false">
     <span *ngIf="selected === undefined; else showSelected">{{placeholder}}</span>
-    <ng-template #showSelected>{{selectedText}}</ng-template>
+    <ng-template #showSelected>{{selectedPath}}</ng-template>
   </button>
   <div *ngIf="isVisible" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-    <div *ngIf="path.length > 1" class="dropdown-item row crumb">
-      <span *ngFor="let crumb of path" (click)="crumbClicked($event, crumb)">.{{ crumb.text }}</span>
+    <div *ngIf="path.length > 1" class="dropdown-item dsrow crumb">
+      <span *ngFor="let crumb of path; let i = index; let last = last" (click)="crumbClicked($event, crumb)">
+        {{ crumb.text }}
+        <ng-template [ngIf]="!last">{{crumbSeperator}}</ng-template> 
+      </span>
+      
     </div>
-    <div class="dropdown-item row" *ngFor="let item of ddList" (click)="itemSelected(item)">
+    <div class="dropdown-item dsrow" *ngFor="let item of ddList" (click)="itemSelected(item)">
       <span>
         {{ item.text }}
       </span>

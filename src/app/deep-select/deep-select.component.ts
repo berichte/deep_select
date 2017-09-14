@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { DeepSelectItem } from './deep-select-item';
 
 @Component({
@@ -16,6 +16,8 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   @Input()
   pathRoot = '**';
+  @Input()
+  crumbSeperator = '.';
 
   @Input()
   selected: DeepSelectItem;
@@ -25,7 +27,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   @Output()
   showingChildrenOf: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
-  
+
   isVisible: boolean = false;
   @Output() dropdownOpened = new EventEmitter();
   @Output() dropdownClosed = new EventEmitter();
@@ -35,6 +37,8 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   get selectedText() {
     return this.selected ? this.selected.text : '';
   }
+
+  public selectedPath: string;
 
   private path = new Array<DeepSelectItem>();
 
@@ -54,11 +58,12 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef,
+    private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.selectedChanged.subscribe(selected => this.selected = selected);
-    this.initPath();
+    //this.initPath();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,9 +71,58 @@ export class DeepSelectComponent implements OnInit, OnChanges {
       this.ddList = this.items;
       this.initPath();
     }
+    if (changes['selected']) {
+      const path = this.findPath(this.selected, this.items, new Array<DeepSelectItem>());
+      if(path) {
+        const root = {
+          text: this.pathRoot,
+          children: this.items,
+          value: 0
+        };
+        this.path = [root, ...path];
+        const parentList = this.path[this.path.length - 1].children;
+        this.ddList = parentList ? parentList : this.ddList;
+        this.selectedPath = this.buildSelectedPathString(this.selected, this.path);
+        this._changeDetectorRef.detectChanges();
+      }
+    }
   }
 
-  itemSelected = (item) => this.selectedChanged.emit(item);
+  findPath = (item: DeepSelectItem, items: Array<DeepSelectItem>, path: Array<DeepSelectItem> = new Array<DeepSelectItem>()): Array<DeepSelectItem> | undefined => {
+    const found = items.find(i => i.value === item.value);
+    if (found) {
+      return path;
+    } else {
+      let result;
+      const childless = items
+        .filter(i => i.children);
+      for (let i = 0; i < childless.length; i++) {
+        const children = childless[i].children;
+        if (children) {
+          const p = path.concat([childless[i]]);
+          result = this.findPath(item, children, p);
+          if(result) {
+            return result;
+          }
+        }
+      }
+      return undefined;
+    }
+  }
+
+  itemSelected = (item: DeepSelectItem) => {
+    this.selectedPath = this.buildSelectedPathString(item, this.path);
+    this.selectedChanged.emit(item);
+  }
+
+  buildSelectedPathString = (item: DeepSelectItem, path: Array<DeepSelectItem>): string => {
+    let selectedPath = '';
+    path
+      .filter(i => i.text !== this.pathRoot)
+      .forEach(i => selectedPath += i.text + this.crumbSeperator);
+    selectedPath += item.text;
+    return selectedPath;
+  }
 
   showItemChilds = (event, item) => {
     event.stopPropagation();
@@ -92,7 +146,6 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     this.showItemChilds(event, crumb);
   }
 
-  
   toggleDropdown() {
     this.isVisible = !this.isVisible;
     this.isVisible ? this.dropdownOpened.emit() : this.dropdownClosed.emit();

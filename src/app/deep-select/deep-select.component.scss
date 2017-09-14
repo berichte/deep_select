@@ -1,17 +1,26 @@
-.row {
+.dsrow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
     margin-right: 0;
     margin-left: 0;
-    padding: 0; 
+    padding: 0;
+    padding-left: 10px; 
+}
+
+.dropdown-item {
+    :hover {
+        color: #444;
+    }
 }
 
 .crumb {
     span {
         font-size: small;
         color: chocolate;
+        :hover {
+            color: rgba(210, 105, 30, 0.71)
+        }
     }
     display: flex;
     flex-direction: row;
@@ -19,6 +28,9 @@
 }
 span, .to-childs {
     cursor: pointer;
+}
+span {
+    padding-right: 10px;
 }
 
 .dropdown-menu {
