@@ -12,8 +12,8 @@
       </span>
       
     </div>
-    <div class="dropdown-item dsrow" *ngFor="let item of ddList" (click)="itemSelected(item)">
-      <span [ngClass]="{'selected': item && selected && item.value === selected.value}">
+    <div class="dropdown-item dsrow" *ngFor="let item of ddList | orderBy : ['+text']" (click)="itemSelected(item)">
+      <span [ngClass]="{'selected': isSelected(item, selected)}">
         {{ item.text }}
       </span>
       <div class="to-childs" *ngIf="item.children && item.children.length > 0" (click)="showItemChilds($event, item)">

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DeepSelectComponent } from './deep-select.component';
 import { FormsModule } from '@angular/forms';
+import { OrderBy } from './order-by.pipe';
 
 @NgModule({
   imports: [
@@ -9,7 +10,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
   ],
   declarations: [
-    DeepSelectComponent
+    DeepSelectComponent,
+    OrderBy
   ],
   exports: [
     DeepSelectComponent

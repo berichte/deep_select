@@ -31,7 +31,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
   @Output()
   showingChildrenOf: EventEmitter<DeepSelectItem> = new EventEmitter<DeepSelectItem>();
 
-  isVisible: boolean = false;
+  dsIsVisible: boolean = false;
   @Output() dropdownOpened = new EventEmitter();
   @Output() dropdownClosed = new EventEmitter();
 
@@ -47,7 +47,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
 
   @HostListener('document: click', ['$event.target'])
   onClick(target: HTMLElement | null) {
-    if (!this.isVisible) return;
+    if (!this.dsIsVisible) return;
     let parentFound = false;
     while (target != null && !parentFound) {
       if (target === this.element.nativeElement) {
@@ -56,7 +56,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
       target = target.parentElement;
     }
     if (!parentFound) {
-      this.isVisible = false;
+      this.dsIsVisible = false;
       this.dropdownClosed.emit();
     }
   }
@@ -74,7 +74,7 @@ export class DeepSelectComponent implements OnInit, OnChanges {
       this.ddList = this.items;
       this.initPath();
     }
-    if (changes['selected']) {
+    if (changes['selected'] && this.selected && this.selected !== null) {
       const path = this.findPath(this.selected, this.items, new Array<DeepSelectItem>());
       if(path) {
         const root = {
@@ -161,8 +161,11 @@ export class DeepSelectComponent implements OnInit, OnChanges {
     this.showItemChilds(event, crumb);
   }
 
+  isSelected = (item: DeepSelectItem, selected: DeepSelectItem): boolean => 
+    (item && item !== null && selected && selected !== null && item.value === selected.value);
+
   toggleDropdown() {
-    this.isVisible = !this.isVisible;
-    this.isVisible ? this.dropdownOpened.emit() : this.dropdownClosed.emit();
+    this.dsIsVisible = !this.dsIsVisible;
+    // this.dsIsVisible ? this.dropdownOpened.emit() : this.dropdownClosed.emit();
   }
 }
